@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import ResponsiveAppBar from "../components/MainAppBar";
 
 const Home: NextPage = () => {
   return (
@@ -11,7 +10,6 @@ const Home: NextPage = () => {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ResponsiveAppBar />
     </div>
   );
 };
