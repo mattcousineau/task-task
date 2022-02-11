@@ -32,6 +32,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import NewRequestDialogBox from "./WorkRequestDialog";
 import styled from "@emotion/styled";
 import { useState } from "react";
 
@@ -220,14 +221,7 @@ interface EnhancedTableProps {
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
 
   const createSortHandler =
     (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
@@ -347,7 +341,7 @@ export default function EnhancedTable() {
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
+  /*   const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected: readonly string[] = [];
 
@@ -365,7 +359,7 @@ export default function EnhancedTable() {
     }
 
     setSelected(newSelected);
-  };
+  }; */
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -387,67 +381,19 @@ export default function EnhancedTable() {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-  const [maxWidth, setMaxWidth] = React.useState("sm");
-  const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [dialogVisible, setDialogVisible] = useState(false);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleMaxWidthChange = (event) => {
-    setMaxWidth(event.target.value);
-  };
+  const displayDialog = () => setDialogVisible(true);
+  const cancelDialog = () => setDialogVisible(false);
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Dialog fullWidth={true} open={open} onClose={handleClose}>
-        <DialogTitle>Create New Work Request</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Please fill out all required information.
-          </DialogContentText>
-          <Box
-            noValidate
-            component="form"
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              m: "auto",
-              width: "fit-content",
-            }}
-          >
-            <FormControl sx={{ mt: 2, minWidth: 120 }}>
-              <InputLabel htmlFor="max-width">maxWidth</InputLabel>
-              <Select
-                autoFocus
-                value={maxWidth}
-                onChange={handleMaxWidthChange}
-                label="maxWidth"
-                inputProps={{
-                  name: "max-width",
-                  id: "max-width",
-                }}
-              >
-                <MenuItem value="xs">xs</MenuItem>
-                <MenuItem value="sm">sm</MenuItem>
-                <MenuItem value="md">md</MenuItem>
-                <MenuItem value="lg">lg</MenuItem>
-                <MenuItem value="xl">xl</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-        </DialogActions>
-      </Dialog>
+      <NewRequestDialogBox open={dialogVisible} onCancel={cancelDialog} />
+
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
-        <StyledButton variant="contained" onClick={handleClickOpen}>
+        <StyledButton variant="contained" onClick={displayDialog}>
           Create New
         </StyledButton>
         <TableContainer>
@@ -476,7 +422,7 @@ export default function EnhancedTable() {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      //onClick={(event) => handleClick(event, row.name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}

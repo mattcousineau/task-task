@@ -7,26 +7,20 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import Switch from "@mui/material/Switch";
 
-export default function MaxWidthDialog() {
-  const [open, setOpen] = React.useState(false);
-  const [maxWidth, setMaxWidth] = React.useState("sm");
+interface OpenProps {
+  open: boolean;
+  onCancel: (e: React.MouseEvent<HTMLElement>) => void;
+}
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+export default function NewRequestDialogBox(props: OpenProps) {
+  const [location, setLocation] = React.useState("fb");
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleMaxWidthChange = (event) => {
-    setMaxWidth(
+  const handleLocationChange = (event) => {
+    setLocation(
       // @ts-expect-error autofill of arbitrary value is not handled.
       event.target.value
     );
@@ -34,11 +28,8 @@ export default function MaxWidthDialog() {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Add new Work Request
-      </Button>
-      <Dialog fullWidth={true} open={open} onClose={handleClose}>
-        <DialogTitle>Add New Work Request</DialogTitle>
+      <Dialog fullWidth={true} open={props.open} onClose={props.onCancel}>
+        <DialogTitle>Create New Work Request</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Please fill out all required information.
@@ -54,28 +45,85 @@ export default function MaxWidthDialog() {
             }}
           >
             <FormControl sx={{ mt: 2, minWidth: 120 }}>
-              <InputLabel htmlFor="max-width">maxWidth</InputLabel>
+              <InputLabel htmlFor="location">Location</InputLabel>
               <Select
                 autoFocus
-                value={maxWidth}
-                onChange={handleMaxWidthChange}
-                label="maxWidth"
+                value={location}
+                onChange={handleLocationChange}
+                label="location"
                 inputProps={{
-                  name: "max-width",
-                  id: "max-width",
+                  name: "location",
+                  id: "location",
                 }}
               >
-                <MenuItem value="xs">xs</MenuItem>
-                <MenuItem value="sm">sm</MenuItem>
-                <MenuItem value="md">md</MenuItem>
-                <MenuItem value="lg">lg</MenuItem>
-                <MenuItem value="xl">xl</MenuItem>
+                <MenuItem value="fb">Faculty Building</MenuItem>
+                <MenuItem value="dm">Dormatory</MenuItem>
+                <MenuItem value="gm">Gymnasium</MenuItem>
+                <MenuItem value="ff">Football Field</MenuItem>
+                <MenuItem value="mh">Math Hall</MenuItem>
               </Select>
             </FormControl>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={props.onCancel}>Close</Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
+  );
+}
+
+export function ExistingRequestDialogBox(props: OpenProps) {
+  const [location, setLocation] = React.useState("fb");
+
+  const handleLocationChange = (event) => {
+    setLocation(
+      // @ts-expect-error autofill of arbitrary value is not handled.
+      event.target.value
+    );
+  };
+
+  return (
+    <React.Fragment>
+      <Dialog fullWidth={true} open={props.open} onClose={props.onCancel}>
+        <DialogTitle>Create New Work Request</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please fill out all required information.
+          </DialogContentText>
+          <Box
+            noValidate
+            component="form"
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              m: "auto",
+              width: "fit-content",
+            }}
+          >
+            <FormControl sx={{ mt: 2, minWidth: 120 }}>
+              <InputLabel htmlFor="location">Location</InputLabel>
+              <Select
+                autoFocus
+                value={location}
+                onChange={handleLocationChange}
+                label="location"
+                inputProps={{
+                  name: "location",
+                  id: "location",
+                }}
+              >
+                <MenuItem value="fb">Faculty Building</MenuItem>
+                <MenuItem value="dm">Dormatory</MenuItem>
+                <MenuItem value="gm">Gymnasium</MenuItem>
+                <MenuItem value="ff">Football Field</MenuItem>
+                <MenuItem value="mh">Math Hall</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.onCancel}>Close</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
