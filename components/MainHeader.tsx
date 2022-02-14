@@ -13,7 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Link from "next/link";
 
-const pages = ["Home", "Work Requests", "Orders", "Departments"];
+const pages = ["Home", "Work Requests", "Orders", "Departments", "Employee"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const Header = () => {
