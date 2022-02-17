@@ -26,6 +26,7 @@ import { useState } from "react";
 
 interface Data {
   location: string;
+  description: string;
   desiredDate: string;
   created: string;
   name: string;
@@ -35,6 +36,7 @@ interface Data {
 function createData(
   name: string,
   location: string,
+  description: string,
   created: string,
   desiredDate: string,
   status: string
@@ -42,6 +44,7 @@ function createData(
   return {
     name,
     location,
+    description,
     created,
     desiredDate,
     status,
@@ -52,19 +55,42 @@ const StyledButton = styled(Button)`
   margin-left: 25px;
 `;
 const rows = [
-  createData("Jeff Klein", "West Building", "02/12/2022", "01/28/2022", "OPEN"),
+  createData(
+    "Jeff Klein",
+    "West Building",
+    "Description",
+    "02/12/2022",
+    "01/28/2022",
+    "OPEN"
+  ),
   createData(
     "Mike Cousineau",
     "Gymnasium",
+    "Description",
     "05/13/2021",
     "06/14/2021",
     "CLOSED"
   ),
-  createData("Sally Jones", "Test Field", "12/23/2021", "01/28/2022", "OPEN"),
-  createData("Allen Smith", "Johnson Hall", "01/23/2021", "01/19/2022", "OPEN"),
+  createData(
+    "Sally Jones",
+    "Test Field",
+    "Description",
+    "12/23/2021",
+    "01/28/2022",
+    "OPEN"
+  ),
+  createData(
+    "Allen Smith",
+    "Johnson Hall",
+    "Description",
+    "01/23/2021",
+    "01/19/2022",
+    "OPEN"
+  ),
   createData(
     "Sean Christianson",
     "Dorm II",
+    "Description",
     "05/03/2021",
     "03/28/2022",
     "OPEN"
@@ -72,6 +98,7 @@ const rows = [
   createData(
     "Alice Moore",
     "Cardinal Building",
+    "Description",
     "02/03/2021",
     "04/21/2021",
     "CLOSED"
@@ -79,6 +106,7 @@ const rows = [
   createData(
     "Matt Cousineau",
     "Turner Hall",
+    "Description",
     "04/04/2018",
     "01/08/2022",
     "CLOSED"
@@ -86,6 +114,7 @@ const rows = [
   createData(
     "John Doe",
     "Maintenance Building",
+    "Description",
     "03/02/2006",
     "01/28/2007",
     "OPEN"
@@ -93,15 +122,31 @@ const rows = [
   createData(
     "Jane Doe",
     "Catering Buiding",
+    "Description",
     "01/02/2021",
     "01/02/2021",
     "CLOSED"
   ),
-  createData("Chris Moore", "Test Hall", "11/11/2020", "11/05/2020", "OPEN"),
-  createData("Alex White", "Ice Rink", "08/13/2021", "11/17/2021", "CLOSED"),
+  createData(
+    "Chris Moore",
+    "Test Hall",
+    "Description",
+    "11/11/2020",
+    "11/05/2020",
+    "OPEN"
+  ),
+  createData(
+    "Alex White",
+    "Ice Rink",
+    "Description",
+    "08/13/2021",
+    "11/17/2021",
+    "CLOSED"
+  ),
   createData(
     "Mike Pemberton",
     "Electrical Building",
+    "Description",
     "09/15/2019",
     "10/28/2019",
     "OPEN"
@@ -109,6 +154,7 @@ const rows = [
   createData(
     "Doyle O'Poyle",
     "Math Building",
+    "Description",
     "07/13/2020",
     "08/05/2020",
     "OPEN"
@@ -169,6 +215,12 @@ const headCells: readonly HeadCell[] = [
     numeric: false,
     disablePadding: true,
     label: "Requestor",
+  },
+  {
+    id: "description",
+    numeric: true,
+    disablePadding: false,
+    label: "Description",
   },
   {
     id: "location",
@@ -304,8 +356,8 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 };
 
 export default function EnhancedTable() {
-  const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("location");
+  const [order, setOrder] = React.useState<Order>("desc");
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("status");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -426,6 +478,7 @@ export default function EnhancedTable() {
                       >
                         {row.name}
                       </TableCell>
+                      <TableCell align="right">{row.description}</TableCell>
                       <TableCell align="right">{row.location}</TableCell>
                       <TableCell align="right">{row.created}</TableCell>
                       <TableCell align="right">{row.desiredDate}</TableCell>
