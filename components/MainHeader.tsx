@@ -99,7 +99,14 @@ const Header = () => {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                <Link href={"/" + page.toLowerCase().replace(" ", "-")}>
+                <Link
+                  href={
+                    "/" +
+                    (page.includes("Home")
+                      ? ""
+                      : page.toLowerCase().replace(" ", "-"))
+                  }
+                >
                   {page}
                 </Link>
               </Button>
