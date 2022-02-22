@@ -26,7 +26,7 @@ import { useState } from "react";
 
 interface Data {
   location: string;
-  description: string;
+  order: string;
   desiredDate: string;
   created: string;
   name: string;
@@ -36,7 +36,7 @@ interface Data {
 function createData(
   name: string,
   location: string,
-  description: string,
+  order: string,
   created: string,
   desiredDate: string,
   status: string
@@ -44,7 +44,7 @@ function createData(
   return {
     name,
     location,
-    description,
+    order,
     created,
     desiredDate,
     status,
@@ -54,11 +54,12 @@ function createData(
 const StyledButton = styled(Button)`
   margin-left: 25px;
 `;
+
 const rows = [
   createData(
     "Jeff Klein",
     "West Building",
-    "Description",
+    "101",
     "02/12/2022",
     "01/28/2022",
     "OPEN"
@@ -66,7 +67,7 @@ const rows = [
   createData(
     "Mike Cousineau",
     "Gymnasium",
-    "Description",
+    "102",
     "05/13/2021",
     "06/14/2021",
     "CLOSED"
@@ -74,7 +75,7 @@ const rows = [
   createData(
     "Sally Jones",
     "Test Field",
-    "Description",
+    "103",
     "12/23/2021",
     "01/28/2022",
     "OPEN"
@@ -82,7 +83,7 @@ const rows = [
   createData(
     "Allen Smith",
     "Johnson Hall",
-    "Description",
+    "104",
     "01/23/2021",
     "01/19/2022",
     "OPEN"
@@ -90,7 +91,7 @@ const rows = [
   createData(
     "Sean Christianson",
     "Dorm II",
-    "Description",
+    "105",
     "05/03/2021",
     "03/28/2022",
     "OPEN"
@@ -98,7 +99,7 @@ const rows = [
   createData(
     "Alice Moore",
     "Cardinal Building",
-    "Description",
+    "106",
     "02/03/2021",
     "04/21/2021",
     "CLOSED"
@@ -106,7 +107,7 @@ const rows = [
   createData(
     "Matt Cousineau",
     "Turner Hall",
-    "Description",
+    "107",
     "04/04/2018",
     "01/08/2022",
     "CLOSED"
@@ -114,7 +115,7 @@ const rows = [
   createData(
     "John Doe",
     "Maintenance Building",
-    "Description",
+    "108",
     "03/02/2006",
     "01/28/2007",
     "OPEN"
@@ -122,7 +123,7 @@ const rows = [
   createData(
     "Jane Doe",
     "Catering Buiding",
-    "Description",
+    "109",
     "01/02/2021",
     "01/02/2021",
     "CLOSED"
@@ -130,7 +131,7 @@ const rows = [
   createData(
     "Chris Moore",
     "Test Hall",
-    "Description",
+    "110",
     "11/11/2020",
     "11/05/2020",
     "OPEN"
@@ -138,7 +139,7 @@ const rows = [
   createData(
     "Alex White",
     "Ice Rink",
-    "Description",
+    "111",
     "08/13/2021",
     "11/17/2021",
     "CLOSED"
@@ -146,7 +147,7 @@ const rows = [
   createData(
     "Mike Pemberton",
     "Electrical Building",
-    "Description",
+    "112",
     "09/15/2019",
     "10/28/2019",
     "OPEN"
@@ -154,7 +155,7 @@ const rows = [
   createData(
     "Doyle O'Poyle",
     "Math Building",
-    "Description",
+    "113",
     "07/13/2020",
     "08/05/2020",
     "OPEN"
@@ -217,10 +218,10 @@ const headCells: readonly HeadCell[] = [
     label: "Requestor",
   },
   {
-    id: "description",
+    id: "order",
     numeric: true,
     disablePadding: false,
-    label: "Description",
+    label: "Order #",
   },
   {
     id: "location",
@@ -238,7 +239,7 @@ const headCells: readonly HeadCell[] = [
     id: "desiredDate",
     numeric: true,
     disablePadding: false,
-    label: "Desired Completion Date",
+    label: "Desired Delivery Date",
   },
   {
     id: "status",
@@ -271,12 +272,12 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox"></TableCell>
+        {/* <TableCell padding="checkbox"></TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            padding={"normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -335,7 +336,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
           id="tableTitle"
           component="div"
         >
-          Work Requests
+          Supply Orders
         </Typography>
       )}
       {numSelected > 0 ? (
@@ -355,7 +356,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   );
 };
 
-export default function WorkRequestTable() {
+export default function OrdersTable() {
   const [order, setOrder] = React.useState<Order>("desc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("status");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
@@ -469,16 +470,16 @@ export default function WorkRequestTable() {
                       key={row.name}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox"></TableCell>
+                      {/* <TableCell padding="checkbox"></TableCell> */}
                       <TableCell
+                        padding="normal"
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell align="right">{row.description}</TableCell>
+                      <TableCell align="right">{row.order}</TableCell>
                       <TableCell align="right">{row.location}</TableCell>
                       <TableCell align="right">{row.created}</TableCell>
                       <TableCell align="right">{row.desiredDate}</TableCell>

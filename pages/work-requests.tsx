@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
-import EnhancedTable from "../components/WorkRequestTable";
+import WorkRequestTable from "../components/WorkRequestTable";
 
 const WorkRequests: NextPage = () => {
   return (
     <div>
-      <EnhancedTable />
+      <WorkRequestTable />
     </div>
   );
 };
