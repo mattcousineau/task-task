@@ -20,9 +20,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { Button } from "@mui/material";
-import NewRequestDialogBox from "./WorkRequestDialog";
 import styled from "@emotion/styled";
 import { useState } from "react";
+import SupplyOrderDialogBox from "./SupplyOrderDialog";
 
 interface Data {
   location: string;
@@ -430,7 +430,7 @@ export default function OrdersTable() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <NewRequestDialogBox open={dialogVisible} onCancel={cancelDialog} />
+      <SupplyOrderDialogBox open={dialogVisible} onCancel={cancelDialog} />
 
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
