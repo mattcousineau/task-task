@@ -55,113 +55,6 @@ const StyledButton = styled(Button)`
   margin-left: 25px;
 `;
 
-const rows = [
-  createData(
-    "Jeff Klein",
-    "West Building",
-    "101",
-    "02/12/2022",
-    "01/28/2022",
-    "OPEN"
-  ),
-  createData(
-    "Mike Cousineau",
-    "Gymnasium",
-    "102",
-    "05/13/2021",
-    "06/14/2021",
-    "CLOSED"
-  ),
-  createData(
-    "Sally Jones",
-    "Test Field",
-    "103",
-    "12/23/2021",
-    "01/28/2022",
-    "OPEN"
-  ),
-  createData(
-    "Allen Smith",
-    "Johnson Hall",
-    "104",
-    "01/23/2021",
-    "01/19/2022",
-    "OPEN"
-  ),
-  createData(
-    "Sean Christianson",
-    "Dorm II",
-    "105",
-    "05/03/2021",
-    "03/28/2022",
-    "OPEN"
-  ),
-  createData(
-    "Alice Moore",
-    "Cardinal Building",
-    "106",
-    "02/03/2021",
-    "04/21/2021",
-    "CLOSED"
-  ),
-  createData(
-    "Matt Cousineau",
-    "Turner Hall",
-    "107",
-    "04/04/2018",
-    "01/08/2022",
-    "CLOSED"
-  ),
-  createData(
-    "John Doe",
-    "Maintenance Building",
-    "108",
-    "03/02/2006",
-    "01/28/2007",
-    "OPEN"
-  ),
-  createData(
-    "Jane Doe",
-    "Catering Buiding",
-    "109",
-    "01/02/2021",
-    "01/02/2021",
-    "CLOSED"
-  ),
-  createData(
-    "Chris Moore",
-    "Test Hall",
-    "110",
-    "11/11/2020",
-    "11/05/2020",
-    "OPEN"
-  ),
-  createData(
-    "Alex White",
-    "Ice Rink",
-    "111",
-    "08/13/2021",
-    "11/17/2021",
-    "CLOSED"
-  ),
-  createData(
-    "Mike Pemberton",
-    "Electrical Building",
-    "112",
-    "09/15/2019",
-    "10/28/2019",
-    "OPEN"
-  ),
-  createData(
-    "Doyle O'Poyle",
-    "Math Building",
-    "113",
-    "07/13/2020",
-    "08/05/2020",
-    "OPEN"
-  ),
-];
-
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -355,15 +248,37 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     </Toolbar>
   );
 };
-
-export default function OrdersTable() {
+interface OrderData {
+  name: string;
+  order: string;
+  location: string;
+  created: string;
+  desiredDate: string;
+  status: string;
+}
+interface TableProps {
+  tableData: OrderData[];
+}
+export default function OrdersTable(props: TableProps) {
   const [order, setOrder] = React.useState<Order>("desc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("status");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  const rows: any[] = [];
+  props.tableData.map((item) => {
+    rows.push(
+      createData(
+        item.name,
+        item.location,
+        item.order,
+        item.created,
+        item.desiredDate,
+        item.status
+      )
+    );
+  });
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data

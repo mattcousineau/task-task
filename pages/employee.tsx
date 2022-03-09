@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
-import CustomTable from "../components/CustomTable";
+import EnhancedTable from "../components/EmployeeTable";
 import { employeeData } from "../utilities/testData";
 
 const Employee: NextPage = () => {
   return (
     <div>
-      <CustomTable tableType="employee" tableData={employeeData} />
+      <EnhancedTable tableData={employeeData} />
     </div>
   );
 };

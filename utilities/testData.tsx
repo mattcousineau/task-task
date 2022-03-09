@@ -15,6 +15,22 @@ export const supplyOrderData = [
     desiredDate: "04/28/2022",
     status: "CLOSED",
   },
+  {
+    name: "Jerry Jones",
+    order: "102",
+    location: "East Building",
+    created: "04/12/2022",
+    desiredDate: "04/28/2022",
+    status: "CLOSED",
+  },
+  {
+    name: "Sam Smith",
+    order: "102",
+    location: "East Building",
+    created: "04/12/2022",
+    desiredDate: "04/28/2022",
+    status: "CLOSED",
+  },
 ];
 
 export const employeeData = [
