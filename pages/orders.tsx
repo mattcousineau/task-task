@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
-import CustomTable from "../components/CustomTable";
+import OrdersTable from "../components/OrdersTable";
 import { supplyOrderData } from "../utilities/testData";
 
 const Orders: NextPage = () => {
   return (
     <div>
-      <CustomTable tableType="supplyOrder" tableData={supplyOrderData} />
+      <OrdersTable tableData={supplyOrderData} />
     </div>
   );
 };
