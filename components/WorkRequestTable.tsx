@@ -363,6 +363,37 @@ export default function WorkRequestTable() {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  interface flags {
+    nsfw: boolean;
+    religious: boolean;
+    political: boolean;
+    racist: boolean;
+    sexist: boolean;
+    explicit: boolean;
+  }
+
+  interface jokeData {
+    category: string;
+    delivery: string;
+    error: boolean;
+    flags: flags;
+    id: number;
+    lang: string;
+    safe: boolean;
+    setup: string;
+    type: string;
+  }
+
+  async function getJokeData(url: string) {
+    console.log("getting data from: " + url);
+    const response = await fetch(url);
+    var data = await response.json();
+    var test = data as jokeData;
+    console.log(test.flags.political);
+  }
+
+  getJokeData("https://v2.jokeapi.dev/joke/Any?safe-mode");
+
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data

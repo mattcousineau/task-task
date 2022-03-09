@@ -34,7 +34,16 @@ interface Data {
   status: string;
 }
 
-function createData(
+interface EmployeeData {
+  employeeId: string;
+  employeeName: string;
+  position: string;
+  department: string;
+  email: string;
+  phone: string;
+}
+
+function createOrderData(
   name: string,
   location: string,
   order: string,
@@ -49,6 +58,24 @@ function createData(
     created,
     desiredDate,
     status,
+  };
+}
+
+function createEmployeeData(
+  employeeId: string,
+  employeeName: string,
+  position: string,
+  department: string,
+  email: string,
+  phone: string
+): EmployeeData {
+  return {
+    employeeId,
+    employeeName,
+    position,
+    department,
+    email,
+    phone,
   };
 }
 
@@ -114,7 +141,7 @@ interface EnhancedTableProps {
   order: Order;
   orderBy: string;
   rowCount: number;
-  tableData: Data[];
+  tableData: Data[] | EmployeeData[];
 }
 
 function EnhancedTableHead(props: EnhancedTableProps) {
@@ -233,11 +260,11 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 
 interface TableProps {
   tableType: string; // workRequest or supplyOrder
-  tableData: Data[];
+  tableData: any[];
 }
 
 export default function CustomTable(props: TableProps) {
-  const rows: Data[] = [];
+  const rows: any[] = [];
   const { tableType, tableData } = props;
   const [order, setOrder] = React.useState<Order>("desc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("status");
@@ -246,18 +273,34 @@ export default function CustomTable(props: TableProps) {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-  tableData.map((item, i) => {
-    rows.push(
-      createData(
-        item.name,
-        item.order,
-        item.location,
-        item.created,
-        item.desiredDate,
-        item.status
-      )
-    );
-  });
+  if (tableType.includes("supplyOrder")) {
+    tableData.map((item, i) => {
+      rows.push(
+        createOrderData(
+          item.name,
+          item.order,
+          item.location,
+          item.created,
+          item.desiredDate,
+          item.status
+        )
+      );
+    });
+  } else if (tableType.includes("employee")) {
+    tableData.map((item, i) => {
+      console.log(">>>>>>>>" + item.employeeName);
+      rows.push(
+        createEmployeeData(
+          item.employeeId,
+          item.employeeName,
+          item.position,
+          item.department,
+          item.email,
+          item.phone
+        )
+      );
+    });
+  }
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -291,8 +334,6 @@ export default function CustomTable(props: TableProps) {
   const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDense(event.target.checked);
   };
-
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -336,35 +377,49 @@ export default function CustomTable(props: TableProps) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow
-                      hover
-                      //onClick={(event) => handleClick(event, row.name)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.name}
-                      selected={isItemSelected}
-                    >
-                      {/* for each json object, print out one TableCell per member */}
-                      <TableCell
-                        padding="normal"
-                        component="th"
-                        id={labelId}
-                        scope="row"
+                  if (tableType.includes("supplyOrder")) {
+                    return (
+                      <TableRow
+                        hover
+                        //onClick={(event) => handleClick(event, row.name)}
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row.name}
                       >
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="right">{row.order}</TableCell>
-                      <TableCell align="right">{row.location}</TableCell>
-                      <TableCell align="right">{row.created}</TableCell>
-                      <TableCell align="right">{row.desiredDate}</TableCell>
-                      <TableCell align="right">{row.status}</TableCell>
-                    </TableRow>
-                  );
+                        {/* for each json object, print out one TableCell per member */}
+                        <TableCell padding="normal" component="th" scope="row">
+                          order
+                          {row.name}
+                        </TableCell>
+                        <TableCell align="right">{row.order}</TableCell>
+                        <TableCell align="right">{row.location}</TableCell>
+                        <TableCell align="right">{row.created}</TableCell>
+                        <TableCell align="right">{row.desiredDate}</TableCell>
+                        <TableCell align="right">{row.status}</TableCell>
+                      </TableRow>
+                    );
+                  } else if (tableType.includes("employee")) {
+                    return (
+                      <TableRow
+                        hover
+                        //onClick={(event) => handleClick(event, row.name)}
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row.name}
+                      >
+                        {/* for each json object, print out one TableCell per member */}
+                        <TableCell padding="normal" component="th" scope="row">
+                          emplyee
+                          {row.name}
+                        </TableCell>
+                        <TableCell align="right">{row.order}</TableCell>
+                        <TableCell align="right">{row.location}</TableCell>
+                        <TableCell align="right">{row.created}</TableCell>
+                        <TableCell align="right">{row.desiredDate}</TableCell>
+                        <TableCell align="right">{row.status}</TableCell>
+                      </TableRow>
+                    );
+                  }
                 })}
               {emptyRows > 0 && (
                 <TableRow
