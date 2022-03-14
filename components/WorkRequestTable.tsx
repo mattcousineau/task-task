@@ -25,27 +25,27 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 
 interface Data {
-  location: string;
+  requestor: string;
   description: string;
+  location: string;
+  dateCreated: string;
   desiredDate: string;
-  created: string;
-  name: string;
   status: string;
 }
 
 function createData(
-  name: string,
-  location: string,
+  requestor: string,
   description: string,
-  created: string,
+  location: string,
+  dateCreated: string,
   desiredDate: string,
   status: string
 ): Data {
   return {
-    name,
-    location,
+    requestor,
     description,
-    created,
+    location,
+    dateCreated,
     desiredDate,
     status,
   };
@@ -54,112 +54,6 @@ function createData(
 const StyledButton = styled(Button)`
   margin-left: 25px;
 `;
-const rows = [
-  createData(
-    "Jeff Klein",
-    "West Building",
-    "Description",
-    "02/12/2022",
-    "01/28/2022",
-    "OPEN"
-  ),
-  createData(
-    "Mike Cousineau",
-    "Gymnasium",
-    "Description",
-    "05/13/2021",
-    "06/14/2021",
-    "CLOSED"
-  ),
-  createData(
-    "Sally Jones",
-    "Test Field",
-    "Description",
-    "12/23/2021",
-    "01/28/2022",
-    "OPEN"
-  ),
-  createData(
-    "Allen Smith",
-    "Johnson Hall",
-    "Description",
-    "01/23/2021",
-    "01/19/2022",
-    "OPEN"
-  ),
-  createData(
-    "Sean Christianson",
-    "Dorm II",
-    "Description",
-    "05/03/2021",
-    "03/28/2022",
-    "OPEN"
-  ),
-  createData(
-    "Alice Moore",
-    "Cardinal Building",
-    "Description",
-    "02/03/2021",
-    "04/21/2021",
-    "CLOSED"
-  ),
-  createData(
-    "Matt Cousineau",
-    "Turner Hall",
-    "Description",
-    "04/04/2018",
-    "01/08/2022",
-    "CLOSED"
-  ),
-  createData(
-    "John Doe",
-    "Maintenance Building",
-    "Description",
-    "03/02/2006",
-    "01/28/2007",
-    "OPEN"
-  ),
-  createData(
-    "Jane Doe",
-    "Catering Buiding",
-    "Description",
-    "01/02/2021",
-    "01/02/2021",
-    "CLOSED"
-  ),
-  createData(
-    "Chris Moore",
-    "Test Hall",
-    "Description",
-    "11/11/2020",
-    "11/05/2020",
-    "OPEN"
-  ),
-  createData(
-    "Alex White",
-    "Ice Rink",
-    "Description",
-    "08/13/2021",
-    "11/17/2021",
-    "CLOSED"
-  ),
-  createData(
-    "Mike Pemberton",
-    "Electrical Building",
-    "Description",
-    "09/15/2019",
-    "10/28/2019",
-    "OPEN"
-  ),
-  createData(
-    "Doyle O'Poyle",
-    "Math Building",
-    "Description",
-    "07/13/2020",
-    "08/05/2020",
-    "OPEN"
-  ),
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -211,7 +105,7 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
   {
-    id: "name",
+    id: "requestor",
     numeric: false,
     disablePadding: true,
     label: "Requestor",
@@ -229,7 +123,7 @@ const headCells: readonly HeadCell[] = [
     label: "Location",
   },
   {
-    id: "created",
+    id: "dateCreated",
     numeric: true,
     disablePadding: false,
     label: "Date Created",
@@ -354,14 +248,38 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     </Toolbar>
   );
 };
+interface RequestData {
+  requestor: string;
+  description: string;
+  location: string;
+  dateCreated: string;
+  desiredDate: string;
+  status: string;
+}
+interface TableProps {
+  tableData: RequestData[];
+}
 
-export default function WorkRequestTable() {
+export default function WorkRequestTable(props: TableProps) {
   const [order, setOrder] = React.useState<Order>("desc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("status");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const rows: any[] = [];
+  props.tableData.map((item) => {
+    rows.push(
+      createData(
+        item.requestor,
+        item.description,
+        item.location,
+        item.dateCreated,
+        item.desiredDate,
+        item.status
+      )
+    );
+  });
 
   interface flags {
     nsfw: boolean;
@@ -487,7 +405,7 @@ export default function WorkRequestTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.requestor);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -497,7 +415,7 @@ export default function WorkRequestTable() {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.requestor}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox"></TableCell>
@@ -507,11 +425,11 @@ export default function WorkRequestTable() {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {row.requestor}
                       </TableCell>
                       <TableCell align="right">{row.description}</TableCell>
                       <TableCell align="right">{row.location}</TableCell>
-                      <TableCell align="right">{row.created}</TableCell>
+                      <TableCell align="right">{row.dateCreated}</TableCell>
                       <TableCell align="right">{row.desiredDate}</TableCell>
                       <TableCell align="right">{row.status}</TableCell>
                     </TableRow>

@@ -67,112 +67,6 @@ function createData(
 const StyledButton = styled(Button)`
   margin-left: 25px;
 `;
-const rows = [
-  createData(
-    "101",
-    "Jeff Klein",
-    "Maintenance Manager",
-    "Maintenance",
-    "jklein@gmail.com",
-    "(231)796-5443"
-  ),
-  createData(
-    "104",
-    "Mike Cousineau",
-    "Custodian II",
-    "Custodial",
-    "mikecousineau01@gmail.com",
-    "(743)541-9348"
-  ),
-  createData(
-    "106",
-    "Sally Jones",
-    "Custodian I",
-    "Custodial",
-    "sjones@gmail.com",
-    "(521)551-9348"
-  ),
-  createData(
-    "108",
-    "Allen Smith",
-    "Grounds I",
-    "Grounds Maintenance",
-    "asmith@gmail.com",
-    "(616)251-9341"
-  ),
-  createData(
-    "114",
-    "Sean Christianson",
-    "Custodian I",
-    "Custodial",
-    "schristianson@gmail.com",
-    "(215)551-6214"
-  ),
-  createData(
-    "117",
-    "Alice Moore",
-    "Grounds Manager",
-    "Grounds Maintenance",
-    "amoore@gmail.com",
-    "(731)688-1111"
-  ),
-  createData(
-    "194",
-    "Matt Cousineau",
-    "Custodian I",
-    "Custodial",
-    "mcousineau@gmail.com",
-    "(645)873-9114"
-  ),
-  createData(
-    "204",
-    "John Doe",
-    "Custodian Manager",
-    "Custodial",
-    "jdoe@gmail.com",
-    "(215)541-9348"
-  ),
-  createData(
-    "217",
-    "Jane Doe",
-    "Student Worker",
-    "Custodial",
-    "janedoe@gmail.com",
-    "(843)141-9911"
-  ),
-  createData(
-    "288",
-    "Chris Moore",
-    "Student Worker",
-    "Custodial",
-    "cmoore@gmail.com",
-    "(841)241-6214"
-  ),
-  createData(
-    "299",
-    "Alex White",
-    "Maintenance II",
-    "Maintenance",
-    "alexw@gmail.com",
-    "(145)541-6321"
-  ),
-  createData(
-    "314",
-    "Mike Pemberton",
-    "Electrical Maintenance",
-    "Maintenance",
-    "test@tester.edu",
-    "(616)543-6663"
-  ),
-  createData(
-    "467",
-    "Doyle O'Poyle",
-    "Custodian Apprentice",
-    "Custodial",
-    "dopoyle@gmail.com",
-    "(231)555-9318"
-  ),
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -367,14 +261,38 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     </Toolbar>
   );
 };
+interface EmployeeData {
+  employeeId: string;
+  employeeName: string;
+  position: string;
+  department: string;
+  email: string;
+  phone: string;
+}
+interface TableProps {
+  tableData: EmployeeData[];
+}
 
-export default function EnhancedTable() {
+export default function EmployeeTable(props: TableProps) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("employeeId");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const rows: any[] = [];
+  props.tableData.map((item) => {
+    rows.push(
+      createData(
+        item.employeeId,
+        item.employeeName,
+        item.position,
+        item.department,
+        item.email,
+        item.phone
+      )
+    );
+  });
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
