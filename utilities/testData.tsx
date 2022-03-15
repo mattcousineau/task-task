@@ -70,8 +70,43 @@ export const employeeData = [
     employeeId: "212",
     employeeName: "Mike Shoemaker",
     position: "Custodian II",
-    department: "Custodial III",
+    department: "Custodial",
     email: "mshoemaker@gmail.com",
     phone: "(231)431-0349",
+  },
+];
+
+export const requestData = [
+  {
+    requestor: "Marcus Johansen",
+    description: "Fix the toilet",
+    location: "Johnson building",
+    dateCreated: "04/05/2016",
+    desiredDate: "04/06/2016",
+    status: "OPEN",
+  },
+  {
+    requestor: "Richard Smalls",
+    description: "Light won't turn on",
+    location: "Regis Symphonic Emporium",
+    dateCreated: "06/01/2022",
+    desiredDate: "06/04/2022",
+    status: "OPEN",
+  },
+  {
+    requestor: "Jerald The Simp",
+    description: "Dropped my keys in sewer drain",
+    location: "Starbucks",
+    dateCreated: "03/17/2022",
+    desiredDate: "03/18/2022",
+    status: "CLOSED",
+  },
+  {
+    requestor: "Dannielle Masters",
+    description: "Broken window",
+    location: "Grounds building",
+    dateCreated: "03/14/2022",
+    desiredDate: "03/15/2022",
+    status: "OPEN",
   },
 ];
