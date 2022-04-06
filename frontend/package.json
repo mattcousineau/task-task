@@ -2,7 +2,7 @@
   "name": "task-task",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 7777",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
